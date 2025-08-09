@@ -28,6 +28,18 @@ canvas.chart.short{aspect-ratio:52/16}
 .tests h3{margin:0 0 6px;font-size:14px;color:#cfe0ff}
 .test-pass{color:#6fe9a6;font-weight:700}
 .test-fail{color:#ff7aa2;font-weight:700}
+@media (max-width:600px){
+  .chart-wrap{
+    display:flex;
+    flex-direction:column;
+  }
+  .chart-wrap .legend-panel{
+    position:static;
+    order:-1;
+    margin-bottom:8px;
+    align-self:flex-start;
+  }
+}
 </style>
 </head>
 <body>
