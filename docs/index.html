@@ -50,6 +50,24 @@ canvas.chart.short{aspect-ratio:52/16}
     margin-bottom:8px;
     align-self:flex-start;
   }
+  .lab{
+    font-size:14px !important;
+  }
+  .val{
+    font-size:16px !important;
+  }
+  .intro h1{
+    font-size:24px !important;
+  }
+  .intro p{
+    font-size:18px !important;
+  }
+  .step p{
+    font-size:16px !important;
+  }
+  .surprise{
+    font-size:20px !important;
+  }
 }
 </style>
 </head>
@@ -107,11 +125,12 @@ canvas.chart.short{aspect-ratio:52/16}
     <div id="tooltip1" class="tooltip"></div>
   </div>
   <div class="chart-wrap" id="wrap2">
-    <canvas id="chart2" class="chart short" width="1040" height="300" aria-label="Pre-Iteration Outcomes"></canvas>
+    <canvas id="chart2" class="chart short" width="1040" height="300" aria-label="Win Rate Race"></canvas>
     <div class="legend-panel">
       <div style="color:#cfe0ff;">Legend</div>
-      <div class="key"><span class="swatch" style="background:#5ccfff"></span> Switch — Touching Rows</div>
-      <div class="key"><span class="swatch" style="background:#ff7aa2"></span> Stay — Touching Rows</div>
+      <div class="key"><span class="swatch" style="background:#5ccfff"></span> Switch Wins</div>
+      <div class="key"><span class="swatch" style="background:#ff7aa2"></span> Stay Wins</div>
+      <div class="small">Dashed: theoretical rates</div>
     </div>
     <div id="tooltip2" class="tooltip"></div>
   </div>
@@ -133,12 +152,158 @@ function getCanvasMouse(canvas,evt){var rect=canvas.getBoundingClientRect();var 
 function drawAxes(ctx,W,H,pL,pR,pT,pB,title,xlab,ylab){ctx.fillStyle=COLOR_TEXT;ctx.font='12px system-ui';ctx.textAlign='center';ctx.fillText(xlab,(W-pL-pR)/2+pL,H-8);ctx.save();ctx.translate(14,(H-pT-pB)/2+pT);ctx.rotate(-Math.PI/2);ctx.fillText(ylab,0,0);ctx.restore();ctx.font='14px system-ui';ctx.fillStyle='#cfe0ff';ctx.fillText(title,(W-pL-pR)/2+pL,pT-12)}
 function drawXTicks(ctx,N,pL,pR,pT,pB,W,H){if(N<=1)return;var inW=W-pL-pR;var desired=90;var maxTicks=Math.max(2,Math.floor(inW/desired));var step=Math.max(1,Math.round((N-1)/maxTicks));ctx.textAlign='center';ctx.textBaseline='top';ctx.strokeStyle=COLOR_GRID;ctx.lineWidth=1;ctx.fillStyle=COLOR_TEXT;ctx.font='12px system-ui';for(var i=0;i<N;i+=step){var x=pL+(i/(N-1))*inW;ctx.beginPath();ctx.moveTo(x,pT);ctx.lineTo(x,H-pB);ctx.stroke();ctx.fillText(String(i+1),x,H-pB+8)}}
 function drawCumulative(canvas,swSeries,stSeries,hoverIndex){var ctx=canvas.getContext('2d');var W=canvas.width,H=canvas.height;ctx.clearRect(0,0,W,H);var pL=64,pR=18,pT=48,pB=42;var inW=W-pL-pR,inH=H-pT-pB;ctx.strokeStyle=COLOR_GRID;ctx.lineWidth=1;ctx.font='12px system-ui';ctx.fillStyle=COLOR_TEXT;ctx.textAlign='right';ctx.textBaseline='middle';for(var p=0;p<=100;p+=10){var y=pT+(1-p/100)*inH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();ctx.fillText(p+'%',pL-8,y)}drawXTicks(ctx,swSeries.length,pL,pR,pT,pB,W,H);function line(series,color){ctx.strokeStyle=color;ctx.lineWidth=2;ctx.beginPath();for(var i=0;i<series.length;i++){var x=pL+(i/(series.length-1))*inW;var y=pT+(1-series[i]/100)*inH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.stroke()}line(swSeries,COLOR_SWITCH);line(stSeries,COLOR_STAY);ctx.setLineDash([6,6]);ctx.strokeStyle=COLOR_REF;[66.6667,33.3333].forEach(function(p){var y=pT+(1-p/100)*inH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke()});ctx.setLineDash([]);if(hoverIndex!=null){var x=pL+(hoverIndex/(swSeries.length-1))*inW;ctx.strokeStyle='#cfe0ff88';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,pT);ctx.lineTo(x,H-pB);ctx.stroke();var y1=pT+(1-swSeries[hoverIndex]/100)*inH;var y2=pT+(1-stSeries[hoverIndex]/100)*inH;ctx.fillStyle=COLOR_SWITCH;ctx.beginPath();ctx.arc(x,y1,3,0,Math.PI*2);ctx.fill();ctx.fillStyle=COLOR_STAY;ctx.beginPath();ctx.arc(x,y2,3,0,Math.PI*2);ctx.fill()}drawAxes(ctx,W,H,pL,pR,pT,pB,'Cumulative Win %','Trials','Win %');return{pL:pL,pR:pR,pT:pT,pB:pB,inW:inW,inH:inH,N:swSeries.length}}
-function drawBooleanStreakBlocks(canvas, swOut, stOut, hoverIndex){var ctx=canvas.getContext('2d');var W=canvas.width,H=canvas.height;ctx.clearRect(0,0,W,H);var pL=110,pR=18,pT=48,pB=36;var inW=W-pL-pR,inH=H-pT-pB;var rowH=inH/2;ctx.font='12px system-ui';ctx.fillStyle=COLOR_TEXT;ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText('Switch',pL-8,pT+rowH/2);ctx.fillText('Stay',pL-8,pT+rowH+rowH/2);var N=swOut.length;drawXTicks(ctx,N,pL,pR,pT,pB,W,H);if(N===0){drawAxes(ctx,W,H,pL,pR,pT,pB,'Pre-Iteration Outcomes (Touching Rows)','Trials','');return{pL:pL,pR:pR,pT:pT,pB:pB,inW:inW,inH:inH,N:0}}var cellW=inW/N;var yTopSw=pT+rowH*0.2;var yTopSt=pT+rowH+rowH*0.2;var h=Math.max(1,Math.floor(rowH*0.6));ctx.fillStyle=COLOR_SWITCH;for(var i=0;i<N;i++){if(swOut[i]){var x=Math.floor(pL+i*cellW);var w=Math.ceil(cellW);ctx.fillRect(x,Math.floor(yTopSw),w,h)}}ctx.fillStyle=COLOR_STAY;for(var j=0;j<N;j++){if(stOut[j]){var x2=Math.floor(pL+j*cellW);var w2=Math.ceil(cellW);ctx.fillRect(x2,Math.floor(yTopSt),w2,h)}}if(hoverIndex!=null){var xh=pL+Math.max(0,Math.min(N-1,hoverIndex))*cellW+cellW/2;ctx.strokeStyle='#cfe0ff88';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(xh,pT);ctx.lineTo(xh,H-pB);ctx.stroke()}drawAxes(ctx,W,H,pL,pR,pT,pB,'Pre-Iteration Outcomes (Touching Rows)','Trials','');return{pL:pL,pR:pR,pT:pT,pB:pB,inW:inW,inH:inH,N:N,cellW:cellW}}
+function drawRacingBars(canvas, swOut, stOut, hoverIndex){
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  ctx.clearRect(0,0,W,H);
+  var pL=64,pR=18,pT=48,pB=42;
+  var inW=W-pL-pR,inH=H-pT-pB;
+  var N=swOut.length;
+  
+  if(N===0){
+    drawAxes(ctx,W,H,pL,pR,pT,pB,'Trial by Trial Results','','');
+    return{pL:pL,pR:pR,pT:pT,pB:pB,inW:inW,inH:inH,N:0};
+  }
+  
+  // Calculate cumulative wins for each trial
+  var swCumulative=[];
+  var stCumulative=[];
+  var swWins=0,stWins=0;
+  
+  for(var i=0;i<N;i++){
+    if(swOut[i]) swWins++;
+    if(stOut[i]) stWins++;
+    swCumulative[i]=swWins;
+    stCumulative[i]=stWins;
+  }
+  
+  // Draw grid lines
+  ctx.strokeStyle=COLOR_GRID;
+  ctx.lineWidth=1;
+  
+  // Horizontal grid lines (wins)
+  var maxWins=Math.max(swWins,stWins);
+  var stepWins=Math.max(1,Math.ceil(maxWins/10));
+  ctx.font='12px system-ui';
+  ctx.fillStyle=COLOR_TEXT;
+  ctx.textAlign='right';
+  ctx.textBaseline='middle';
+  
+  for(var w=0;w<=maxWins;w+=stepWins){
+    var y=pT+inH-(w/maxWins)*inH;
+    ctx.beginPath();
+    ctx.moveTo(pL,y);
+    ctx.lineTo(W-pR,y);
+    ctx.stroke();
+    ctx.fillText(String(w),pL-8,y);
+  }
+  
+  // Vertical grid lines (trials)
+  drawXTicks(ctx,N,pL,pR,pT,pB,W,H);
+  
+  // Draw win accumulation lines
+  function drawLine(cumulative,color){
+    if(cumulative.length===0) return;
+    ctx.strokeStyle=color;
+    ctx.lineWidth=3;
+    ctx.beginPath();
+    
+    for(var i=0;i<cumulative.length;i++){
+      var x=pL+(i/(N-1))*inW;
+      var y=pT+inH-(cumulative[i]/maxWins)*inH;
+      if(i===0) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+  }
+  
+  drawLine(swCumulative,COLOR_SWITCH);
+  drawLine(stCumulative,COLOR_STAY);
+  
+  // Draw individual trial markers
+  var dotSize=3;
+  for(var i=0;i<N;i++){
+    var x=pL+(i/(N-1))*inW;
+    
+    // Switch outcome
+    var swY=pT+inH-(swCumulative[i]/maxWins)*inH;
+    ctx.fillStyle=swOut[i]?COLOR_SWITCH:'#2a3350';
+    ctx.beginPath();
+    ctx.arc(x,swY,dotSize,0,Math.PI*2);
+    ctx.fill();
+    
+    // Stay outcome  
+    var stY=pT+inH-(stCumulative[i]/maxWins)*inH;
+    ctx.fillStyle=stOut[i]?COLOR_STAY:'#2a3350';
+    ctx.beginPath();
+    ctx.arc(x,stY,dotSize,0,Math.PI*2);
+    ctx.fill();
+  }
+  
+  // Reference line for theoretical switch advantage
+  if(N>10){
+    var theoreticalSwitch=(N*2/3);
+    var theoreticalStay=(N*1/3);
+    
+    ctx.setLineDash([6,6]);
+    ctx.strokeStyle=COLOR_REF;
+    ctx.lineWidth=1.5;
+    
+    // Theoretical switch line
+    var swTheoY=pT+inH-(theoreticalSwitch/maxWins)*inH;
+    if(swTheoY>=pT && swTheoY<=pT+inH){
+      ctx.beginPath();
+      ctx.moveTo(pL,swTheoY);
+      ctx.lineTo(W-pR,swTheoY);
+      ctx.stroke();
+    }
+    
+    // Theoretical stay line  
+    var stTheoY=pT+inH-(theoreticalStay/maxWins)*inH;
+    if(stTheoY>=pT && stTheoY<=pT+inH){
+      ctx.beginPath();
+      ctx.moveTo(pL,stTheoY);
+      ctx.lineTo(W-pR,stTheoY);
+      ctx.stroke();
+    }
+    
+    ctx.setLineDash([]);
+  }
+  
+  // Hover indicator
+  if(hoverIndex != null && hoverIndex < N){
+    var x=pL+(hoverIndex/(N-1))*inW;
+    ctx.strokeStyle='#cfe0ff88';
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.moveTo(x,pT);
+    ctx.lineTo(x,pT+inH);
+    ctx.stroke();
+    
+    // Highlight the specific trial outcomes
+    var swY=pT+inH-(swCumulative[hoverIndex]/maxWins)*inH;
+    var stY=pT+inH-(stCumulative[hoverIndex]/maxWins)*inH;
+    
+    ctx.fillStyle=COLOR_SWITCH;
+    ctx.beginPath();
+    ctx.arc(x,swY,5,0,Math.PI*2);
+    ctx.fill();
+    
+    ctx.fillStyle=COLOR_STAY;
+    ctx.beginPath();
+    ctx.arc(x,stY,5,0,Math.PI*2);
+    ctx.fill();
+  }
+  
+  drawAxes(ctx,W,H,pL,pR,pT,pB,'Trial by Trial Results','Trials','Cumulative Wins');
+  
+  return{pL:pL,pR:pR,pT:pT,pB:pB,inW:inW,inH:inH,N:N,maxWins:maxWins};
+}
 function formatPct(x){return(Math.round(x*1000)/10).toFixed(1)+'%'}
-function simulateAndRender(){var n=Math.max(10,Math.min(100000,parseInt(document.getElementById('iters').value||'1000',10)));var sc=generateScenarios(n);var sw=evalStrategy(sc,'switch');var st=evalStrategy(sc,'stay');lastRun={scenarios:sc,sw:sw,st:st};document.getElementById('swWins').textContent=sw.wins.toLocaleString();document.getElementById('stWins').textContent=st.wins.toLocaleString();document.getElementById('swPct').textContent=formatPct(sw.wins/n);document.getElementById('stPct').textContent=formatPct(st.wins/n);drawCumulative(document.getElementById('chart1'),sw.series,st.series,null);drawBooleanStreakBlocks(document.getElementById('chart2'),sw.outcomes,st.outcomes,null)}
-function attachHover(wrapId,canvas,drawFn,tipId,getArrays){var wrap=document.getElementById(wrapId);var tip=document.getElementById(tipId);function move(evt){if(!lastRun)return;var arr=getArrays();var meta=drawFn.apply(null,[canvas].concat(arr).concat([null]));var pos=getCanvasMouse(canvas,evt);var N=meta.N;var i;if(N>0){var xRel=pos.x-meta.pL;var colW=meta.cellW||meta.inW/Math.max(1,N);i=Math.floor(xRel/colW)}else{i=0}if(i<0||i>=N){tip.style.display='none';drawFn.apply(null,[canvas].concat(arr).concat([null]));return}drawFn.apply(null,[canvas].concat(arr).concat([i]));var s=lastRun.scenarios[i];var html='<div class="hd">Iteration '+(i+1)+'</div>'+'<div><span style="color:'+COLOR_SWITCH+'">Switch</span> '+(lastRun.sw.outcomes[i]?'WIN':'LOSS')+'</div>'+'<div><span style="color:'+COLOR_STAY+'">Stay</span> '+(lastRun.st.outcomes[i]?'WIN':'LOSS')+'</div>'+'<div class="small">car:'+s.car+' | first:'+s.first+' | opened:'+s.opened+'</div>';if(tipId==='tooltip1'){html='<div class="hd">Iteration '+(i+1)+'</div>'+'<div><span style="color:'+COLOR_SWITCH+'">Switch</span>: '+formatPct(lastRun.sw.series[i]/100)+'</div>'+'<div><span style="color:'+COLOR_STAY+'">Stay</span>: '+formatPct(lastRun.st.series[i]/100)+'</div>'+'<div class="small">car:'+s.car+' | first:'+s.first+' | opened:'+s.opened+'</div>'}tip.innerHTML=html;var rect=wrap.getBoundingClientRect();var c=evt.touches?evt.touches[0]:evt;var tx=c.clientX-rect.left+12;var ty=c.clientY-rect.top+12;tip.style.display='block';tip.style.left=tx+'px';tip.style.top=ty+'px'}function leave(){if(!lastRun)return;var arr=getArrays();drawFn.apply(null,[canvas].concat(arr).concat([null]));tip.style.display='none'}canvas.addEventListener('mousemove',move,{passive:true});canvas.addEventListener('mouseleave',leave,{passive:true});canvas.addEventListener('touchstart',move,{passive:true});canvas.addEventListener('touchmove',move,{passive:true});canvas.addEventListener('touchend',leave,{passive:true})}
-function start(){simulateAndRender();attachHover('wrap1',document.getElementById('chart1'),drawCumulative,'tooltip1',function(){return[lastRun.sw.series,lastRun.st.series]});attachHover('wrap2',document.getElementById('chart2'),drawBooleanStreakBlocks,'tooltip2',function(){return[lastRun.sw.outcomes,lastRun.st.outcomes]});runTests()}
-function runTests(){var out=[];var s1=[{car:0,first:0,opened:1}];var sw1=evalStrategy(s1,'switch');var st1=evalStrategy(s1,'stay');out.push({n:'Stay wins when first pick is car',pass:sw1[0]===0&&st1[0]===1});var s2=[{car:2,first:0,opened:1}];var sw2=evalStrategy(s2,'switch');var st2=evalStrategy(s2,'stay');out.push({n:'Switch wins when first pick is goat',pass:sw2[0]===1&&st2[0]===0});var trials=3000;var sc=generateScenarios(trials);var sw=evalStrategy(sc,'switch');var st=evalStrategy(sc,'stay');var swp=sw.reduce((a,b)=>a+b,0)/trials;var stp=st.reduce((a,b)=>a+b,0)/trials;out.push({n:'Switch ≈ 2/3',pass:swp>0.60&&swp<0.73});out.push({n:'Stay ≈ 1/3',pass:stp>0.27&&stp<0.40});var c=document.getElementById('testResults');c.innerHTML='';for(var i=0;i<out.length;i++){var d=document.createElement('div');d.innerHTML=(out[i].pass?'<span class="test-pass">PASS</span>':'<span class="test-fail">FAIL</span>')+' — '+out[i].n;c.appendChild(d)}}
+function simulateAndRender(){var n=Math.max(10,Math.min(100000,parseInt(document.getElementById('iters').value||'1000',10)));var sc=generateScenarios(n);var sw=evalStrategy(sc,'switch');var st=evalStrategy(sc,'stay');lastRun={scenarios:sc,sw:sw,st:st};document.getElementById('swWins').textContent=sw.wins.toLocaleString();document.getElementById('stWins').textContent=st.wins.toLocaleString();document.getElementById('swPct').textContent=formatPct(sw.wins/n);document.getElementById('stPct').textContent=formatPct(st.wins/n);drawCumulative(document.getElementById('chart1'),sw.series,st.series,null);drawRacingBars(document.getElementById('chart2'),sw.outcomes,st.outcomes,null)}
+function attachHover(wrapId,canvas,drawFn,tipId,getArrays){var wrap=document.getElementById(wrapId);var tip=document.getElementById(tipId);function move(evt){if(!lastRun)return;var arr=getArrays();var meta=drawFn.apply(null,[canvas].concat(arr).concat([null]));var pos=getCanvasMouse(canvas,evt);var N=meta.N;var i;if(N>0){if(meta.cols){var xRel=pos.x-meta.pL;var yRel=pos.y-meta.pT;var col=Math.floor((xRel-meta.gapX)/(meta.dotSize+meta.gapX));var row=Math.floor((yRel-meta.gapY)/(meta.dotSize+meta.gapY));i=row*meta.cols+col}else if(meta.barHeight){var xRel=pos.x-meta.pL;i=Math.floor((xRel/meta.inW)*N)}else{var xRel=pos.x-meta.pL;var colW=meta.cellW||meta.inW/Math.max(1,N);i=Math.floor(xRel/colW)}}else{i=0}if(i<0||i>=N){tip.style.display='none';drawFn.apply(null,[canvas].concat(arr).concat([null]));return}drawFn.apply(null,[canvas].concat(arr).concat([i]));var s=lastRun.scenarios[i];var html='<div class="hd">Trial '+(i+1)+'</div>'+'<div><span style="color:'+COLOR_SWITCH+'">Switch</span> '+(lastRun.sw.outcomes[i]?'WIN':'LOSS')+'</div>'+'<div><span style="color:'+COLOR_STAY+'">Stay</span> '+(lastRun.st.outcomes[i]?'WIN':'LOSS')+'</div>'+'<div class="small">car:'+s.car+' | first:'+s.first+' | opened:'+s.opened+'</div>';if(tipId==='tooltip1'){html='<div class="hd">Trial '+(i+1)+'</div>'+'<div><span style="color:'+COLOR_SWITCH+'">Switch</span>: '+formatPct(lastRun.sw.series[i]/100)+'</div>'+'<div><span style="color:'+COLOR_STAY+'">Stay</span>: '+formatPct(lastRun.st.series[i]/100)+'</div>'+'<div class="small">car:'+s.car+' | first:'+s.first+' | opened:'+s.opened+'</div>'}else if(tipId==='tooltip2'){var swWins=0,stWins=0;for(var j=0;j<=i;j++){if(lastRun.sw.outcomes[j])swWins++;if(lastRun.st.outcomes[j])stWins++}html='<div class="hd">Trial '+(i+1)+'</div>'+'<div><span style="color:'+COLOR_SWITCH+'">Switch</span> '+swWins+' wins ('+(lastRun.sw.outcomes[i]?'WIN':'LOSS')+')</div>'+'<div><span style="color:'+COLOR_STAY+'">Stay</span> '+stWins+' wins ('+(lastRun.st.outcomes[i]?'WIN':'LOSS')+')</div>'+'<div class="small">car:'+s.car+' | first:'+s.first+' | opened:'+s.opened+'</div>'}tip.innerHTML=html;var rect=wrap.getBoundingClientRect();var c=evt.touches?evt.touches[0]:evt;var tx=c.clientX-rect.left+12;var ty=c.clientY-rect.top+12;tip.style.display='block';tip.style.left=tx+'px';tip.style.top=ty+'px'}function leave(){if(!lastRun)return;var arr=getArrays();drawFn.apply(null,[canvas].concat(arr).concat([null]));tip.style.display='none'}canvas.addEventListener('mousemove',move,{passive:true});canvas.addEventListener('mouseleave',leave,{passive:true});canvas.addEventListener('touchstart',move,{passive:true});canvas.addEventListener('touchmove',move,{passive:true});canvas.addEventListener('touchend',leave,{passive:true})}
+function start(){simulateAndRender();attachHover('wrap1',document.getElementById('chart1'),drawCumulative,'tooltip1',function(){return[lastRun.sw.series,lastRun.st.series]});attachHover('wrap2',document.getElementById('chart2'),drawRacingBars,'tooltip2',function(){return[lastRun.sw.outcomes,lastRun.st.outcomes]});runTests()}
+function runTests(){var out=[];var s1=[{car:0,first:0,opened:1}];var sw1=evalStrategy(s1,'switch');var st1=evalStrategy(s1,'stay');out.push({n:'Stay wins when first pick is car',pass:sw1.wins===0&&st1.wins===1});var s2=[{car:2,first:0,opened:1}];var sw2=evalStrategy(s2,'switch');var st2=evalStrategy(s2,'stay');out.push({n:'Switch wins when first pick is goat',pass:sw2.wins===1&&st2.wins===0});var trials=3000;var sc=generateScenarios(trials);var sw=evalStrategy(sc,'switch');var st=evalStrategy(sc,'stay');var swp=sw.wins/trials;var stp=st.wins/trials;out.push({n:'Switch ≈ 2/3',pass:swp>0.60&&swp<0.73});out.push({n:'Stay ≈ 1/3',pass:stp>0.27&&stp<0.40});var c=document.getElementById('testResults');c.innerHTML='';for(var i=0;i<out.length;i++){var d=document.createElement('div');d.innerHTML=(out[i].pass?'<span class="test-pass">PASS</span>':'<span class="test-fail">FAIL</span>')+' — '+out[i].n;c.appendChild(d)}}
 document.getElementById('run').addEventListener('click',start);
 window.addEventListener('load',start)
 </script>
