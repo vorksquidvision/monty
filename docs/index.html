@@ -45,12 +45,53 @@ canvas.chart.short{aspect-ratio:52/16}
     order:-1;
     margin-bottom:8px;
     align-self:flex-start;
+    padding:10px 12px;
+    font-size:14px;
+  }
+  .chart-wrap .key{
+    margin-top:8px;
+  }
+  .chart-wrap .swatch{
+    width:24px;
+    height:4px;
+  }
+  canvas.chart{
+    aspect-ratio:4/3 !important;
+  }
+  canvas.chart.short{
+    aspect-ratio:4/2.5 !important;
+  }
+  .stat{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    padding:12px;
+  }
+  .cell{
+    padding:8px;
+    background:#151a2b;
+    border-radius:8px;
   }
   .lab{
     font-size:14px !important;
   }
   .val{
-    font-size:16px !important;
+    font-size:18px !important;
+    margin-top:4px;
+  }
+  .row{
+    flex-direction:column;
+    align-items:stretch;
+    gap:12px;
+  }
+  .row input{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+  }
+  .row button{
+    padding:14px;
+    font-size:16px;
+    font-weight:700;
   }
   .intro h1{
     font-size:24px !important;
@@ -64,8 +105,11 @@ canvas.chart.short{aspect-ratio:52/16}
   .surprise{
     font-size:20px !important;
   }
-  .chart-wrap canvas{
-    font-size:18px !important;
+  .game-steps{
+    gap:16px;
+  }
+  .step{
+    min-width:100px;
   }
 }
 </style>
@@ -187,13 +231,14 @@ function drawRacingBars(canvas, swOut, stOut, hoverIndex){
   }
   
   // Draw grid lines
+  var isMobile=window.innerWidth<=600;
   ctx.strokeStyle=COLOR_GRID;
-  ctx.lineWidth=1;
+  ctx.lineWidth=isMobile?2:1;
   
   // Horizontal grid lines (wins)
   var maxWins=Math.max(swWins,stWins);
   var stepWins=Math.max(1,Math.ceil(maxWins/10));
-  ctx.font='12px system-ui';
+  ctx.font=(isMobile?'16px':'12px')+' system-ui';
   ctx.fillStyle=COLOR_TEXT;
   ctx.textAlign='right';
   ctx.textBaseline='middle';
@@ -214,7 +259,7 @@ function drawRacingBars(canvas, swOut, stOut, hoverIndex){
   function drawLine(cumulative,color){
     if(cumulative.length===0) return;
     ctx.strokeStyle=color;
-    ctx.lineWidth=3;
+    ctx.lineWidth=isMobile?4:3;
     ctx.beginPath();
     
     for(var i=0;i<cumulative.length;i++){
@@ -230,7 +275,7 @@ function drawRacingBars(canvas, swOut, stOut, hoverIndex){
   drawLine(stCumulative,COLOR_STAY);
   
   // Draw individual trial markers
-  var dotSize=3;
+  var dotSize=isMobile?4:3;
   for(var i=0;i<N;i++){
     var x=pL+(i/(N-1))*inW;
     
