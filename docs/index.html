@@ -2,8 +2,69 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Monty Hall — Simulator</title>
+<title>Monty Hall Problem Simulator - Interactive Statistics & Probability Calculator</title>
+<meta name="description" content="Free interactive Mont    <p class="surprise">🤯 <strong>Surprising Result:</strong> Switching wins <span class="highlight">67%</span> of the time! This famous <strong>probability paradox</strong> stumped mathematicians and game show fans alike.</p>
+    <section style="margin:18px auto 0;max-width:600px;text-align:left;background:#151a2b;border-radius:10px;padding:16px 18px;border:1px solid #233055;color:#cfe0ff;font-size:16px;">
+      <h2 style="margin:0 0 12px;font-size:18px;color:#cfe0ff;">Why the Monty Hall Strategy Works</h2>
+      <ul style="margin:12px 0 0 18px;padding:0;list-style:square;">
+        <li>When you pick a door, you have a <b>1/3 chance</b> of choosing the car 🚗, but the <b>other two doors together have a 2/3 chance</b> of hiding the car.</li>
+        <li>The host (like <strong>Monty Hall</strong> from Let's Make a Deal), who knows what's behind the doors, always opens another door to reveal a goat 🐐.</li>
+        <li>This action doesn't change the original odds: the <b>2/3 chance</b> that the car was elsewhere now rests entirely on the remaining unopened door.</li>
+        <li>By switching, you take advantage of those <strong>conditional probability</strong> odds and have a <b>2/3 chance</b> to win the car 🚗.</li>roblem simulator. Test the famous Let's Make a Deal probability puzzle with live statistics. Discover why switching doors wins 67% of the time with visual proof and explanations.">
+<meta name="keywords" content="Monty Hall problem, Let's Make a Deal, probability simulator, statistics calculator, game theory, mathematical puzzle, probability paradox, conditional probability, Bayesian statistics, interactive math, educational tool">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Monty Hall Simulator">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://vorksquidvision.github.io/monty/">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vorksquidvision.github.io/monty/">
+<meta property="og:title" content="Monty Hall Problem Simulator - Interactive Statistics Calculator">
+<meta property="og:description" content="Solve the famous Let's Make a Deal probability puzzle with our interactive simulator. See why switching doors wins 67% of the time with visual proof.">
+<meta property="og:image" content="https://vorksquidvision.github.io/monty/preview.png">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://vorksquidvision.github.io/monty/">
+<meta property="twitter:title" content="Monty Hall Problem Simulator - Interactive Statistics Calculator">
+<meta property="twitter:description" content="Solve the famous Let's Make a Deal probability puzzle with our interactive simulator. See why switching doors wins 67% of the time.">
+<meta property="twitter:image" content="https://vorksquidvision.github.io/monty/preview.png">
+
+<!-- Additional SEO -->
+<meta name="theme-color" content="#1d8ffe">
+<meta name="application-name" content="Monty Hall Simulator">
+<meta name="msapplication-TileColor" content="#1d8ffe">
+
+<!-- JSON-LD Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Monty Hall Problem Simulator",
+  "description": "Interactive simulator for the famous Monty Hall probability problem from Let's Make a Deal. Educational tool demonstrating conditional probability and game theory.",
+  "url": "https://vorksquidvision.github.io/monty/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "creator": {
+    "@type": "Organization",
+    "name": "Educational Tools"
+  },
+  "keywords": ["Monty Hall", "probability", "statistics", "Let's Make a Deal", "game theory", "mathematics", "education"],
+  "educationalUse": "instruction",
+  "educationalLevel": "high school, college, university",
+  "learningResourceType": "simulation",
+  "audience": {
+    "@type": "EducationalAudience",
+    "educationalRole": "student, teacher, researcher"
+  }
+}
+</script>
 <style>
 html,body{margin:0;padding:0;background:#0e0f13;color:#e8eaf1;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 .wrap{max-width:1100px;margin:14px auto;padding:10px}
@@ -119,10 +180,10 @@ canvas.chart.short{aspect-ratio:52/16}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="intro">
-  <h1>🎪 The Monty Hall Problem</h1>
-  <p>You're on a game show! There are 3 doors: behind one is a 🚗 <strong>car</strong>, behind the others are 🐐 <strong>goats</strong>.</p>
+<main class="wrap">
+  <header class="intro">
+  <h1>🎪 The Monty Hall Problem Simulator</h1>
+  <p>Experience the famous probability paradox from <strong>Let's Make a Deal</strong>! Choose from 3 doors: behind one is a 🚗 <strong>car</strong>, behind the others are 🐐 <strong>goats</strong>.</p>
   <div class="game-steps">
       <div class="step">
         <div class="step-num">1</div>
@@ -159,23 +220,23 @@ canvas.chart.short{aspect-ratio:52/16}
         <a href="cards.html" style="color:#5ccfff;text-decoration:none;font-weight:600;">🃏 Try the Card Version →</a>
         <div style="font-size:14px;color:#9daccc;margin-top:4px;">See this principle with a 52-card deck (98% advantage!)</div>
       </div>
-    </div>
-  </div>
+    </section>
+  </header>
   
-  <div class="row">
+  <section class="row">
   <label for="iters">Iterations:</label>
   <input id="iters" type="number" min="10" max="1000000" step="10" value="1000">
   <button id="run">Run</button>
-  <span class="small">Compare <b>Always Switch</b> vs <b>Always Stay</b>. Hover charts for details.</span>
+  <span class="small">Compare <b>Always Switch</b> vs <b>Always Stay</b> strategies. Hover charts for detailed trial data.</span>
   <span id="iterWarning" style="display:none;color:#ff7aa2;font-weight:600;margin-left:12px;"></span>
-  </div>
-  <div class="stat">
+  </section>
+  <section class="stat">
     <div class="cell"><div class="lab">Switch — Wins</div><div id="swWins" class="val">–</div></div>
     <div class="cell"><div class="lab">Switch — Win %</div><div id="swPct" class="val">–</div></div>
     <div class="cell"><div class="lab">Stay — Wins</div><div id="stWins" class="val">–</div></div>
     <div class="cell"><div class="lab">Stay — Win %</div><div id="stPct" class="val">–</div></div>
-  </div>
-  <div class="chart-wrap" id="wrap1">
+  </section>
+  <article class="chart-wrap" id="wrap1">
     <canvas id="chart1" class="chart" width="1040" height="420" aria-label="Cumulative win% chart"></canvas>
     <div class="legend-panel">
       <div style="color:#cfe0ff;">Legend</div>
@@ -184,8 +245,8 @@ canvas.chart.short{aspect-ratio:52/16}
       <div class="small">Dashes: 66.7% & 33.3%</div>
     </div>
     <div id="tooltip1" class="tooltip"></div>
-  </div>
-  <div class="chart-wrap" id="wrap2">
+  </article>
+  <article class="chart-wrap" id="wrap2">
     <canvas id="chart2" class="chart short" width="1040" height="300" aria-label="Win Rate Race"></canvas>
     <div class="legend-panel">
       <div style="color:#cfe0ff;">Legend</div>
@@ -194,8 +255,8 @@ canvas.chart.short{aspect-ratio:52/16}
       <div class="small">Dashed: theoretical rates</div>
     </div>
     <div id="tooltip2" class="tooltip"></div>
-  </div>
-</div>
+  </article>
+</main>
 <script>
 var COLOR_SWITCH='#5ccfff';
 var COLOR_STAY='#ff7aa2';
@@ -207,9 +268,9 @@ function generateScenarios(n){var list=new Array(n);for(var i=0;i<n;i++){var car
 function evalStrategy(scenarios,strategy){var n=scenarios.length,wins=0,series=new Array(n),outcomes=new Array(n);for(var i=0;i<n;i++){var s=scenarios[i];var pick=(strategy==='stay')?s.first:[0,1,2].filter(function(d){return d!==s.first&&d!==s.opened})[0];var win=(pick===s.car)?1:0;wins+=win;series[i]=100*wins/(i+1);outcomes[i]=win}return{wins:wins,series:series,outcomes:outcomes}}
 function getCanvasMouse(canvas,evt){var rect=canvas.getBoundingClientRect();var c=evt.touches?evt.touches[0]:evt;return{x:c.clientX-rect.left,y:c.clientY-rect.top}}
 function setupCanvas(canvas){var ctx=canvas.getContext('2d');var rect=canvas.getBoundingClientRect();var dpr=window.devicePixelRatio||1;canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;ctx.scale(dpr,dpr);canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';return ctx}
-function drawAxes(ctx,W,H,pL,pR,pT,pB,title,xlab,ylab){var isMobile=window.innerWidth<=600;if(isMobile){pL=80;pR=25;pT=60;pB=50}ctx.fillStyle=COLOR_TEXT;ctx.font=(isMobile?'15px':'12px')+' Arial, Helvetica, sans-serif';ctx.textAlign='center';ctx.fillText(xlab,(W-pL-pR)/2+pL,H-12);ctx.save();ctx.translate(18,(H-pT-pB)/2+pT);ctx.rotate(-Math.PI/2);ctx.fillText(ylab,0,0);ctx.restore();ctx.font=(isMobile?'17px':'14px')+' Arial, Helvetica, sans-serif';ctx.fillStyle='#cfe0ff';ctx.fillText(title,(W-pL-pR)/2+pL,pT-20)}
-function drawXTicks(ctx,N,pL,pR,pT,pB,W,H){if(N<=1)return;var isMobile=window.innerWidth<=600;if(isMobile){pL=80;pR=25;pT=60;pB=50}var inW=W-pL-pR;var desired=isMobile?50:40;var maxTicks=Math.max(2,Math.floor(inW/desired));var step=Math.max(1,Math.round((N-1)/maxTicks));ctx.textAlign='center';ctx.textBaseline='top';ctx.strokeStyle=COLOR_GRID;ctx.lineWidth=isMobile?2:1;ctx.fillStyle=COLOR_TEXT;ctx.font=(isMobile?'13px':'12px')+' Arial, Helvetica, sans-serif';for(var i=0;i<N;i+=step){var x=pL+(i/(N-1))*inW;ctx.beginPath();ctx.moveTo(x,pT);ctx.lineTo(x,H-pB);ctx.stroke();ctx.fillText(String(i+1),x,H-pB+6)}}
-function drawCumulative(canvas,swSeries,stSeries,hoverIndex){var ctx=setupCanvas(canvas);var W=canvas.width/(window.devicePixelRatio||1),H=canvas.height/(window.devicePixelRatio||1);ctx.clearRect(0,0,canvas.width,canvas.height);var pL=64,pR=18,pT=48,pB=42;var isMobile=window.innerWidth<=600;if(isMobile){pL=80;pR=25;pT=60;pB=50}var inW=W-pL-pR,inH=H-pT-pB;ctx.strokeStyle=COLOR_GRID;ctx.lineWidth=isMobile?2:1;ctx.font=(isMobile?'13px':'12px')+' Arial, Helvetica, sans-serif';ctx.fillStyle=COLOR_TEXT;ctx.textAlign='right';ctx.textBaseline='middle';var stepSize=isMobile?20:10;for(var p=0;p<=100;p+=stepSize){var y=pT+(1-p/100)*inH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();ctx.fillText(p+'%',pL-6,y)}drawXTicks(ctx,swSeries.length,pL,pR,pT,pB,W,H);function line(series,color){ctx.strokeStyle=color;ctx.lineWidth=isMobile?4:2;ctx.beginPath();for(var i=0;i<series.length;i++){var x=pL+(i/(series.length-1))*inW;var y=pT+(1-series[i]/100)*inH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.stroke()}line(swSeries,COLOR_SWITCH);line(stSeries,COLOR_STAY);ctx.setLineDash([6,6]);ctx.strokeStyle=COLOR_REF;[66.6667,33.3333].forEach(function(p){var y=pT+(1-p/100)*inH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke()});ctx.setLineDash([]);if(hoverIndex!=null){var x=pL+(hoverIndex/(swSeries.length-1))*inW;ctx.strokeStyle='#cfe0ff88';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,pT);ctx.lineTo(x,H-pB);ctx.stroke();var y1=pT+(1-swSeries[hoverIndex]/100)*inH;var y2=pT+(1-stSeries[hoverIndex]/100)*inH;ctx.fillStyle=COLOR_SWITCH;ctx.beginPath();ctx.arc(x,y1,3,0,Math.PI*2);ctx.fill();ctx.fillStyle=COLOR_STAY;ctx.beginPath();ctx.arc(x,y2,3,0,Math.PI*2);ctx.fill()}drawAxes(ctx,W,H,pL,pR,pT,pB,'Cumulative Win %','Trials','Win %');return{pL:pL,pR:pR,pT:pT,pB:pB,inW:inW,inH:inH,N:swSeries.length}}
+function drawAxes(ctx,W,H,pL,pR,pT,pB,title,xlab,ylab){var isMobile=window.innerWidth<=600;if(isMobile){pL=80;pR=25;pT=60;pB=55}ctx.fillStyle=COLOR_TEXT;ctx.font=(isMobile?'15px':'12px')+' Arial, Helvetica, sans-serif';ctx.textAlign='center';ctx.fillText(xlab,(W-pL-pR)/2+pL,H-17);ctx.save();ctx.translate(18,(H-pT-pB)/2+pT);ctx.rotate(-Math.PI/2);ctx.fillText(ylab,0,0);ctx.restore();ctx.font=(isMobile?'17px':'14px')+' Arial, Helvetica, sans-serif';ctx.fillStyle='#cfe0ff';ctx.fillText(title,(W-pL-pR)/2+pL,pT-20)}
+function drawXTicks(ctx,N,pL,pR,pT,pB,W,H){if(N<=1)return;var isMobile=window.innerWidth<=600;if(isMobile){pL=80;pR=25;pT=60;pB=55}var inW=W-pL-pR;var desired=isMobile?50:40;var maxTicks=Math.max(2,Math.floor(inW/desired));var step=Math.max(1,Math.round((N-1)/maxTicks));ctx.textAlign='center';ctx.textBaseline='top';ctx.strokeStyle=COLOR_GRID;ctx.lineWidth=isMobile?2:1;ctx.fillStyle=COLOR_TEXT;ctx.font=(isMobile?'13px':'12px')+' Arial, Helvetica, sans-serif';for(var i=0;i<N;i+=step){var x=pL+(i/(N-1))*inW;ctx.beginPath();ctx.moveTo(x,pT);ctx.lineTo(x,H-pB);ctx.stroke();ctx.fillText(String(i+1),x,H-pB+6)}}
+function drawCumulative(canvas,swSeries,stSeries,hoverIndex){var ctx=setupCanvas(canvas);var W=canvas.width/(window.devicePixelRatio||1),H=canvas.height/(window.devicePixelRatio||1);ctx.clearRect(0,0,canvas.width,canvas.height);var pL=64,pR=18,pT=48,pB=42;var isMobile=window.innerWidth<=600;if(isMobile){pL=80;pR=25;pT=60;pB=55}var inW=W-pL-pR,inH=H-pT-pB;ctx.strokeStyle=COLOR_GRID;ctx.lineWidth=isMobile?2:1;ctx.font=(isMobile?'13px':'12px')+' Arial, Helvetica, sans-serif';ctx.fillStyle=COLOR_TEXT;ctx.textAlign='right';ctx.textBaseline='middle';var stepSize=isMobile?20:10;for(var p=0;p<=100;p+=stepSize){var y=pT+(1-p/100)*inH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();ctx.fillText(p+'%',pL-6,y)}drawXTicks(ctx,swSeries.length,pL,pR,pT,pB,W,H);function line(series,color){ctx.strokeStyle=color;ctx.lineWidth=isMobile?4:2;ctx.beginPath();for(var i=0;i<series.length;i++){var x=pL+(i/(series.length-1))*inW;var y=pT+(1-series[i]/100)*inH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.stroke()}line(swSeries,COLOR_SWITCH);line(stSeries,COLOR_STAY);ctx.setLineDash([6,6]);ctx.strokeStyle=COLOR_REF;[66.6667,33.3333].forEach(function(p){var y=pT+(1-p/100)*inH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke()});ctx.setLineDash([]);if(hoverIndex!=null){var x=pL+(hoverIndex/(swSeries.length-1))*inW;ctx.strokeStyle='#cfe0ff88';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,pT);ctx.lineTo(x,H-pB);ctx.stroke();var y1=pT+(1-swSeries[hoverIndex]/100)*inH;var y2=pT+(1-stSeries[hoverIndex]/100)*inH;ctx.fillStyle=COLOR_SWITCH;ctx.beginPath();ctx.arc(x,y1,3,0,Math.PI*2);ctx.fill();ctx.fillStyle=COLOR_STAY;ctx.beginPath();ctx.arc(x,y2,3,0,Math.PI*2);ctx.fill()}drawAxes(ctx,W,H,pL,pR,pT,pB,'Cumulative Win %','Trials','Win %');return{pL:pL,pR:pR,pT:pT,pB:pB,inW:inW,inH:inH,N:swSeries.length}}
 function drawRacingBars(canvas, swOut, stOut, hoverIndex){
   var ctx=setupCanvas(canvas);
   var W=canvas.width/(window.devicePixelRatio||1),H=canvas.height/(window.devicePixelRatio||1);
@@ -237,7 +298,7 @@ function drawRacingBars(canvas, swOut, stOut, hoverIndex){
   
   // Draw grid lines
   var isMobile=window.innerWidth<=600;
-  if(isMobile){pL=80;pR=25;pT=60;pB=50;inW=W-pL-pR;inH=H-pT-pB}
+  if(isMobile){pL=80;pR=25;pT=60;pB=55;inW=W-pL-pR;inH=H-pT-pB}
   ctx.strokeStyle=COLOR_GRID;
   ctx.lineWidth=isMobile?2:1;
   
