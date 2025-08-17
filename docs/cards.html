@@ -3,7 +3,15 @@
 <head>
 <meta charset="utf-8">
 <title>Ace of Spades — Card Switch Simulator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=devic    <p class="surprise">🤯 <strong>Surprise:</strong> Switching wins <span class="highlight">98%</span> of the time! Let's prove it...</p>
+    <div style="margin:18px auto 0;max-width:800px;text-align:left;background:#151a2b;border-radius:10px;padding:24px 28px;border:1px solid #233055;color:#cfe0ff;font-size:16px;line-height:1.6;">
+      <b style="font-size:18px;display:block;margin-bottom:8px;">Why Switching Works</b>
+      <ul style="margin:16px 0 0 24px;padding:0;list-style:square;">
+        <li style="margin-bottom:10px;">When you pick a card, you have a <b>1/52 chance</b> of choosing the Ace of Spades 🂡, but the <b>other 51 cards together have a 51/52 chance</b> of hiding it.</li>
+        <li style="margin-bottom:10px;">The host reveals 50 cards that are not the Ace of Spades.</li>
+        <li style="margin-bottom:10px;">This action doesn't change the original odds: the <b>51/52 chance</b> that the Ace was elsewhere now rests entirely on the one remaining unrevealed card.</li>
+        <li style="margin-bottom:10px;">By switching, you take advantage of those odds and have a <b>51/52 chance</b> to win the Ace of Spades 🂡.</li>
+      </ul>initial-scale=1">
 <style>
 html,body{margin:0;padding:0;background:#0e0f13;color:#e8eaf1;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 .wrap{max-width:1100px;margin:14px auto;padding:10px}
@@ -114,6 +122,23 @@ canvas.chart.short{aspect-ratio:52/16}
   }
   .step{
     min-width:100px;
+  }
+  /* Reset explanation box styles for mobile */
+  .wrap div[style*="max-width:800px"]{
+    max-width:100% !important;
+    padding:16px 18px !important;
+    font-size:16px !important;
+    line-height:1.5 !important;
+  }
+  .wrap div[style*="max-width:800px"] b{
+    font-size:16px !important;
+    margin-bottom:4px !important;
+  }
+  .wrap div[style*="max-width:800px"] ul{
+    margin:12px 0 0 18px !important;
+  }
+  .wrap div[style*="max-width:800px"] li{
+    margin-bottom:6px !important;
   }
 }
 </style>
@@ -235,9 +260,10 @@ function getCanvasMouse(canvas,evt){var rect=canvas.getBoundingClientRect();var 
 function setupCanvas(canvas){var ctx=canvas.getContext('2d');var rect=canvas.getBoundingClientRect();var dpr=window.devicePixelRatio||1;canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;ctx.scale(dpr,dpr);canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';return ctx}
 function drawAxes(ctx,W,H,pL,pR,pT,pB,title,xlab,ylab){var isMobile=window.innerWidth<=600;if(isMobile){pL=80;pR=25;pT=60;pB=55}ctx.fillStyle=COLOR_TEXT;ctx.font=(isMobile?'15px':'12px')+' Arial, Helvetica, sans-serif';ctx.textAlign='center';ctx.fillText(xlab,(W-pL-pR)/2+pL,H-17);ctx.save();ctx.translate(18,(H-pT-pB)/2+pT);ctx.rotate(-Math.PI/2);ctx.fillText(ylab,0,0);ctx.restore();ctx.font=(isMobile?'17px':'14px')+' Arial, Helvetica, sans-serif';ctx.fillStyle='#cfe0ff';ctx.fillText(title,(W-pL-pR)/2+pL,pT-20)}
 function drawXTicks(ctx,N,pL,pR,pT,pB,W,H){if(N<=1)return;var isMobile=window.innerWidth<=600;if(isMobile){pL=80;pR=25;pT=60;pB=55}var inW=W-pL-pR;var desired=isMobile?50:40;var maxTicks=Math.max(2,Math.floor(inW/desired));var step=Math.max(1,Math.round((N-1)/maxTicks));ctx.textAlign='center';ctx.textBaseline='top';ctx.strokeStyle=COLOR_GRID;ctx.lineWidth=isMobile?2:1;ctx.fillStyle=COLOR_TEXT;ctx.font=(isMobile?'13px':'12px')+' Arial, Helvetica, sans-serif';for(var i=0;i<N;i+=step){var x=pL+(i/(N-1))*inW;ctx.beginPath();ctx.moveTo(x,pT);ctx.lineTo(x,H-pB);ctx.stroke();ctx.fillText(String(i+1),x,H-pB+6)}}
-function drawCumulative(canvas,swSeries,stSeries,hoverIndex){var ctx=setupCanvas(canvas);var W=canvas.width/(window.devicePixelRatio||1),H=canvas.height/(window.devicePixelRatio||1);ctx.clearRect(0,0,canvas.width,canvas.height);var pL=64,pR=18,pT=48,pB=42;var isMobile=window.innerWidth<=600;if(isMobile){pL=80;pR=25;pT=60;pB=55}var inW=W-pL-pR,inH=H-pT-pB;ctx.strokeStyle=COLOR_GRID;ctx.lineWidth=isMobile?2:1;ctx.font=(isMobile?'13px':'12px')+' Arial, Helvetica, sans-serif';ctx.fillStyle=COLOR_TEXT;ctx.textAlign='right';ctx.textBaseline='middle';var stepSize=isMobile?20:10;for(var p=0;p<=100;p+=stepSize){var y=pT+(1-p/100)*inH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();ctx.fillText(p+'%',pL-6,y)}drawXTicks(ctx,swSeries.length,pL,pR,pT,pB,W,H);function line(series,color){ctx.strokeStyle=color;ctx.lineWidth=isMobile?4:2;ctx.beginPath();for(var i=0;i<series.length;i++){var x=pL+(i/(series.length-1))*inW;var y=pT+(1-series[i]/100)*inH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.stroke()}line(swSeries,COLOR_SWITCH);line(stSeries,COLOR_STAY);ctx.setLineDash([6,6]);ctx.strokeStyle=COLOR_REF;[98.0769,1.9231].forEach(function(p){var y=pT+(1-p/100)*inH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke()});ctx.setLineDash([]);if(hoverIndex!=null){var x=pL+(hoverIndex/(swSeries.length-1))*inW;ctx.strokeStyle='#cfe0ff88';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,pT);ctx.lineTo(x,H-pB);ctx.stroke();var y1=pT+(1-swSeries[hoverIndex]/100)*inH;var y2=pT+(1-stSeries[hoverIndex]/100)*inH;ctx.fillStyle=COLOR_SWITCH;ctx.beginPath();ctx.arc(x,y1,3,0,Math.PI*2);ctx.fill();ctx.fillStyle=COLOR_STAY;ctx.beginPath();ctx.arc(x,y2,3,0,Math.PI*2);ctx.fill()}drawAxes(ctx,W,H,pL,pR,pT,pB,'Cumulative Win %','Trials','Win %');return{pL:pL,pR:pR,pT:pT,pB:pB,inW:inW,inH:inH,N:swSeries.length}}
+function drawCumulative(canvas,swSeries,stSeries,hoverIndex){var ctx=canvas.getContext('2d');if(!canvas._isSetup){setupCanvas(canvas);canvas._isSetup=true}var W=canvas.width/(window.devicePixelRatio||1),H=canvas.height/(window.devicePixelRatio||1);ctx.clearRect(0,0,canvas.width,canvas.height);var pL=64,pR=18,pT=48,pB=42;var isMobile=window.innerWidth<=600;if(isMobile){pL=80;pR=25;pT=60;pB=55}var inW=W-pL-pR,inH=H-pT-pB;ctx.strokeStyle=COLOR_GRID;ctx.lineWidth=isMobile?2:1;ctx.font=(isMobile?'13px':'12px')+' Arial, Helvetica, sans-serif';ctx.fillStyle=COLOR_TEXT;ctx.textAlign='right';ctx.textBaseline='middle';var stepSize=isMobile?20:10;for(var p=0;p<=100;p+=stepSize){var y=pT+(1-p/100)*inH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();ctx.fillText(p+'%',pL-6,y)}drawXTicks(ctx,swSeries.length,pL,pR,pT,pB,W,H);function line(series,color){ctx.strokeStyle=color;ctx.lineWidth=isMobile?4:2;ctx.beginPath();for(var i=0;i<series.length;i++){var x=pL+(i/(series.length-1))*inW;var y=pT+(1-series[i]/100)*inH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.stroke()}line(swSeries,COLOR_SWITCH);line(stSeries,COLOR_STAY);ctx.setLineDash([6,6]);ctx.strokeStyle=COLOR_REF;[98.0769,1.9231].forEach(function(p){var y=pT+(1-p/100)*inH;ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke()});ctx.setLineDash([]);if(hoverIndex!=null){var x=pL+(hoverIndex/(swSeries.length-1))*inW;ctx.strokeStyle='#cfe0ff88';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,pT);ctx.lineTo(x,H-pB);ctx.stroke();var y1=pT+(1-swSeries[hoverIndex]/100)*inH;var y2=pT+(1-stSeries[hoverIndex]/100)*inH;ctx.fillStyle=COLOR_SWITCH;ctx.beginPath();ctx.arc(x,y1,3,0,Math.PI*2);ctx.fill();ctx.fillStyle=COLOR_STAY;ctx.beginPath();ctx.arc(x,y2,3,0,Math.PI*2);ctx.fill()}drawAxes(ctx,W,H,pL,pR,pT,pB,'Cumulative Win %','Trials','Win %');return{pL:pL,pR:pR,pT:pT,pB:pB,inW:inW,inH:inH,N:swSeries.length}}
 function drawRacingBars(canvas, swOut, stOut, hoverIndex){
-  var ctx=setupCanvas(canvas);
+  var ctx=canvas.getContext('2d');
+  if(!canvas._isSetup){setupCanvas(canvas);canvas._isSetup=true}
   var W=canvas.width/(window.devicePixelRatio||1),H=canvas.height/(window.devicePixelRatio||1);
   ctx.clearRect(0,0,canvas.width,canvas.height);
   var pL=64,pR=18,pT=48,pB=42;
@@ -408,8 +434,11 @@ function simulateAndRender(){
   document.getElementById('stWins').textContent = st.wins.toLocaleString();
   document.getElementById('swPct').textContent = formatPct(sw.wins / n);
   document.getElementById('stPct').textContent = formatPct(st.wins / n);
-  drawCumulative(document.getElementById('chart1'), sw.series, st.series, null);
-  drawRacingBars(document.getElementById('chart2'), sw.outcomes, st.outcomes, null);
+  var canvas1=document.getElementById('chart1');
+  var canvas2=document.getElementById('chart2');
+  canvas1._isSetup=false;canvas2._isSetup=false;
+  drawCumulative(canvas1, sw.series, st.series, null);
+  drawRacingBars(canvas2, sw.outcomes, st.outcomes, null);
 }
 function attachHover(wrapId,canvas,drawFn,tipId,getArrays){var wrap=document.getElementById(wrapId);var tip=document.getElementById(tipId);function move(evt){if(!lastRun)return;var arr=getArrays();var meta=drawFn.apply(null,[canvas].concat(arr).concat([null]));var pos=getCanvasMouse(canvas,evt);var N=meta.N;var i;if(N>0){if(meta.cols){var xRel=pos.x-meta.pL;var yRel=pos.y-meta.pT;var col=Math.floor((xRel-meta.gapX)/(meta.dotSize+meta.gapX));var row=Math.floor((yRel-meta.gapY)/(meta.dotSize+meta.gapY));i=row*meta.cols+col}else if(meta.barHeight){var xRel=pos.x-meta.pL;i=Math.floor((xRel/meta.inW)*N)}else{var xRel=pos.x-meta.pL;var colW=meta.cellW||meta.inW/Math.max(1,N);i=Math.floor(xRel/colW)}}else{i=0}if(i<0||i>=N){tip.style.display='none';drawFn.apply(null,[canvas].concat(arr).concat([null]));return}drawFn.apply(null,[canvas].concat(arr).concat([i]));var s=lastRun.scenarios[i];var html='<div class="hd">Trial '+(i+1)+'</div>'+'<div><span style="color:'+COLOR_SWITCH+'">Switch</span> '+(lastRun.sw.outcomes[i]?'WIN':'LOSS')+'</div>'+'<div><span style="color:'+COLOR_STAY+'">Stay</span> '+(lastRun.st.outcomes[i]?'WIN':'LOSS')+'</div>'+'<div class="small">ace:'+s.ace+' | first:'+s.first+' | switch:'+s.switchCard+'</div>';if(tipId==='tooltip1'){html='<div class="hd">Trial '+(i+1)+'</div>'+'<div><span style="color:'+COLOR_SWITCH+'">Switch</span>: '+formatPct(lastRun.sw.series[i]/100)+'</div>'+'<div><span style="color:'+COLOR_STAY+'">Stay</span>: '+formatPct(lastRun.st.series[i]/100)+'</div>'+'<div class="small">ace:'+s.ace+' | first:'+s.first+' | switch:'+s.switchCard+'</div>'}else if(tipId==='tooltip2'){var swWins=0,stWins=0;for(var j=0;j<=i;j++){if(lastRun.sw.outcomes[j])swWins++;if(lastRun.st.outcomes[j])stWins++}html='<div class="hd">Trial '+(i+1)+'</div>'+'<div><span style="color:'+COLOR_SWITCH+'">Switch</span> '+swWins+' wins ('+(lastRun.sw.outcomes[i]?'WIN':'LOSS')+')</div>'+'<div><span style="color:'+COLOR_STAY+'">Stay</span> '+stWins+' wins ('+(lastRun.st.outcomes[i]?'WIN':'LOSS')+')</div>'+'<div class="small">ace:'+s.ace+' | first:'+s.first+' | switch:'+s.switchCard+'</div>'}tip.innerHTML=html;var rect=wrap.getBoundingClientRect();var c=evt.touches?evt.touches[0]:evt;var isMobile=evt.touches&&evt.touches.length>0;var tx=c.clientX-rect.left+(isMobile?12:12);var ty=c.clientY-rect.top+(isMobile?-60:12);tip.style.display='block';tip.style.left=tx+'px';tip.style.top=ty+'px'}function leave(){if(!lastRun)return;var arr=getArrays();drawFn.apply(null,[canvas].concat(arr).concat([null]));tip.style.display='none'}canvas.addEventListener('mousemove',move,{passive:true});canvas.addEventListener('mouseleave',leave,{passive:true});canvas.addEventListener('touchstart',move,{passive:true});canvas.addEventListener('touchmove',move,{passive:true});canvas.addEventListener('touchend',leave,{passive:true})}
 function start(){simulateAndRender();attachHover('wrap1',document.getElementById('chart1'),drawCumulative,'tooltip1',function(){return[lastRun.sw.series,lastRun.st.series]});attachHover('wrap2',document.getElementById('chart2'),drawRacingBars,'tooltip2',function(){return[lastRun.sw.outcomes,lastRun.st.outcomes]})}
