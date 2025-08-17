@@ -7,6 +7,17 @@
 <style>
 html,body{margin:0;padding:0;background:#0e0f13;color:#e8eaf1;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 .wrap{max-width:1100px;margin:14px auto;padding:10px}
+.intro{text-align:center;margin-bottom:24px;padding:20px;background:#0f1320;border:1px solid #233055;border-radius:12px}
+.intro h1{margin:0 0 12px;font-size:28px;color:#cfe0ff}
+.intro p{margin:8px 0;font-size:16px;line-height:1.5}
+.game-steps{display:flex;justify-content:center;gap:24px;margin:20px 0;flex-wrap:wrap}
+.step{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:120px}
+.step-num{width:32px;height:32px;border-radius:50%;background:#1d8ffe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.step-content{text-align:center}
+.doors{font-size:24px;margin-bottom:8px;letter-spacing:4px}
+.step p{margin:0;font-size:14px;color:#9daccc}
+.surprise{font-size:18px;margin-top:16px !important;color:#cfe0ff}
+.highlight{color:#5ccfff;font-weight:700}
 .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 input[type=number]{width:140px;padding:6px 8px;background:#0f1320;color:#fff;border:1px solid #2a3350;border-radius:8px}
 button{padding:8px 12px;border-radius:8px;border:0;background:#1d8ffe;color:#fff;font-weight:600;cursor:pointer}
@@ -44,6 +55,35 @@ canvas.chart.short{aspect-ratio:52/16}
 </head>
 <body>
 <div class="wrap">
+  <div class="intro">
+    <h1>🎪 The Monty Hall Problem</h1>
+    <p>You're on a game show! There are 3 doors: behind one is a 🚗 <strong>car</strong>, behind the others are 🐐 <strong>goats</strong>.</p>
+    <div class="game-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="doors">🚪 🚪 🚪</div>
+          <p>You pick a door</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="doors">🚪 ❌ 🚪</div>
+          <p>Host opens a door with a goat</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="doors">🚪 ❓ 🚪</div>
+          <p><strong>Switch</strong> or <strong>stay</strong>?</p>
+        </div>
+      </div>
+    </div>
+    <p class="surprise">🤯 <strong>Surprise:</strong> Switching wins <span class="highlight">67%</span> of the time! Let's prove it...</p>
+  </div>
+  
   <div class="row">
     <label for="iters">Iterations:</label>
     <input id="iters" type="number" min="10" max="100000" step="10" value="1000">
