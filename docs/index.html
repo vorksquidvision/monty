@@ -73,9 +73,9 @@ canvas.chart.short{aspect-ratio:52/16}
 <body>
 <div class="wrap">
   <div class="intro">
-    <h1>🎪 The Monty Hall Problem</h1>
-    <p>You're on a game show! There are 3 doors: behind one is a 🚗 <strong>car</strong>, behind the others are 🐐 <strong>goats</strong>.</p>
-    <div class="game-steps">
+  <h1>🎪 The Monty Hall Problem</h1>
+  <p>You're on a game show! There are 3 doors: behind one is a 🚗 <strong>car</strong>, behind the others are 🐐 <strong>goats</strong>.</p>
+  <div class="game-steps">
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-content">
@@ -99,6 +99,15 @@ canvas.chart.short{aspect-ratio:52/16}
       </div>
     </div>
     <p class="surprise">🤯 <strong>Surprise:</strong> Switching wins <span class="highlight">67%</span> of the time! Let's prove it...</p>
+    <div style="margin:18px auto 0;max-width:600px;text-align:left;background:#151a2b;border-radius:10px;padding:16px 18px;border:1px solid #233055;color:#cfe0ff;font-size:16px;">
+      <b>Why Switching Works</b>
+      <ul style="margin:12px 0 0 18px;padding:0;list-style:square;">
+        <li>When you pick a door, you have a <b>1/3 chance</b> of choosing the car 🚗, but the <b>other two doors together have a 2/3 chance</b> of hiding the car.</li>
+        <li>The host, who knows what’s behind the doors, always opens another door to reveal a goat 🐐.</li>
+        <li>This action doesn’t change the original odds: the <b>2/3 chance</b> that the car was elsewhere now rests entirely on the remaining unopened door.</li>
+        <li>By switching, you take advantage of those odds and have a <b>2/3 chance</b> to win the car 🚗.</li>
+      </ul>
+    </div>
   </div>
   
   <div class="row">
